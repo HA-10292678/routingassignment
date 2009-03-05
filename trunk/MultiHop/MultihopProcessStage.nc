@@ -7,7 +7,7 @@ generic configuration MultihopProcessStage() {
 } implementation {
   
   components new MultihopProcessStageP();
-  components new PixieStageWrapperC(PIXIE_PRIORITY_NORM, "BeaconProcessStage") as Wrapper;
+  components new PixieStageWrapperC(PIXIE_PRIORITY_NORM, "MultihopProcessStage") as Wrapper;
 
   Input = Wrapper.Input;
   Output = MultihopProcessStageP.PixieSink;
