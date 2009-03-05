@@ -35,7 +35,6 @@ generic module MultihopProcessStageP() {
       call PixieMemAlloc.release(newMR);
       call PixieMemAlloc.release(ref);
       return SUCCESS;
-    }
   } 
 }
 
