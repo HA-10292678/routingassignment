@@ -12,6 +12,7 @@ generic module RoutingTableP() {
 
   uint16_t current_parent;
   uint16_t current_treedepth;
+  uint32_t current_seqnum; //Added so I can give consistent seqnum to the outgoing packets.
 
   command error_t Init.init(){
     int i;
@@ -23,14 +24,19 @@ generic module RoutingTableP() {
     }
     current_parent = 0;
     current_treedepth = 0;
-    
+    current_seqnum = 0;    
+
     return SUCCESS;
   }
 
   async command uint16_t RoutingTable.getCurrentParent() {
     return current_parent;   
   }
-
+  
+  async command uint32_t RoutingTable.getCurrentSeqnum() {
+    current_seqnum = current_seqnum + 1;
+    return current_seqnum;
+  }
   async command uint16_t RoutingTable.getCurrentTreeDepth() {
     return current_treedepth;
   }
