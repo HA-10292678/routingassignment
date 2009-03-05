@@ -17,7 +17,7 @@ implementation
 {
 
   /* Routing table */
-  components new RoutingTable() as RoutingTable;
+  components new RoutingTableP() as RoutingTable;
 
   /* Root beacon tx */
   components new TimerStage(1000) as BeaconTXTimerStage;
@@ -34,7 +34,7 @@ implementation
   
   BeaconReceiveMessageStage.Output -> BeaconProcessStage.Input;
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
-  BeaconProcessStage.RoutingTable -> RoutingTable;
+  BeaconProcessStage.RTable -> RoutingTable;
   
   /* MultiHop recieve msg */
   components new RecieveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultiHopRecieveMessageStage;
