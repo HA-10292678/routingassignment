@@ -31,6 +31,21 @@ implementation
   
   BeaconReceiveMessageStage.Output -> BeaconProcessStage.Input;
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
+  
+  /* MultiHop recieve msg */
+  components new RecieveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultiHopRecieveMessageStage;
+  components new MultihopProcessStage() as MultihopProcessStage;
+  components new SendStage(PIXIE_PRIORITY_NORM, TOS_BCAST_ADDR, MultihopMsg, AM_Multihop_MSG) as MultihopProcessSendStage; 
+  
+  MultihopRecieveMessageStage.Output -> MultihopProcessStage.Input;
+  MultihopProcessStage.Output -> MultihopProcessSendStage.Input;
 
+  /* Multihop take sample */
+  components new TimerStage(10000) as MultihopTXTimerStage;
+  components new MultihopFactoryStage() as MultihopFactoryStage;
+  components new SendStage(PIXIE_PRIORITY_NORM, TOS_BCAST_ADDR, BeaconMsg, AM_BEACON_MSG) as MultihopFactorySendStage;
+
+  MultihopTXTimerStage.Output -> MultihopFactoryStage.Input;
+  MultihopFactoryStage.Output -> MultihopFactorySendStage.Input;
 
 }
