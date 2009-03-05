@@ -2,6 +2,7 @@
 #define CS263_MULTIHOP_H
 
 #define ROOT_ID 0
+#define ROUTING_TABLE_SIZE 10
 
 enum {
   AM_MULTIHOP_MSG = 42,

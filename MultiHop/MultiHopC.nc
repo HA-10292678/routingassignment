@@ -1,7 +1,7 @@
 #include "Pixie.h"
 #include "message.h"
 
-configuration TSRToLedsC
+configuration MultiHopC
 {
 }
 
@@ -15,6 +15,9 @@ nodes and have node ID 0 act as the base station.
 */
 implementation
 {
+
+  /* Routing table */
+  components new RoutingTable() as RoutingTable;
 
   /* Root beacon tx */
   components new TimerStage(1000) as BeaconTXTimerStage;
@@ -31,6 +34,7 @@ implementation
   
   BeaconReceiveMessageStage.Output -> BeaconProcessStage.Input;
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
+  BeaconProcessStage.RoutingTable -> RoutingTable;
   
   /* MultiHop recieve msg */
   components new RecieveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultiHopRecieveMessageStage;
@@ -39,6 +43,7 @@ implementation
   
   MultihopRecieveMessageStage.Output -> MultihopProcessStage.Input;
   MultihopProcessStage.Output -> MultihopProcessSendStage.Input;
+
 
   /* Multihop take sample */
   components new TimerStage(10000) as MultihopTXTimerStage;
@@ -49,3 +54,4 @@ implementation
   MultihopFactoryStage.Output -> MultihopFactorySendStage.Input;
 
 }
+

@@ -1,4 +1,4 @@
-COMPONENT=MultiHop
+COMPONENT=MultiHopC
 
 # Dependencies
 include $(PIXIESRC)/Makefile.in
