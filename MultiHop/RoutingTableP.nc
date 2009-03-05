@@ -1,6 +1,6 @@
 #include "MultiHop.h"
 
-generic module RoutingTable() {
+generic module RoutingTableP() {
   provides interface RoutingTable;
   provides interface Init;
 } implementation {

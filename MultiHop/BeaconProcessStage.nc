@@ -2,7 +2,9 @@
 
 generic configuration BeaconProcessStage() {
   provides interface PixieSink as Input;
+  provides interface RoutingTable as InputTable;
   uses interface PixieSink as Output;
+  uses interface RoutingTable as OutputTable;
   
 } implementation {
   
@@ -13,6 +15,8 @@ generic configuration BeaconProcessStage() {
   Output = BeaconProcessStageP.PixieSink;
 
   Wrapper.PixieStage -> BeaconProcessStageP;
+
+  InputTable = OutputTable;
 
   components PixieC;
   BeaconProcessStageP.PixieMemAlloc -> PixieC;
