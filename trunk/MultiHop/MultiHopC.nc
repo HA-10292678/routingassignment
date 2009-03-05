@@ -45,7 +45,7 @@ implementation
   MultihopProcessStage.Output -> MultihopProcessSendStage.Input;
 
 
-  /* Multihop take sample */
+  /* Multihop take sample and send packet*/
   components new TimerStage(10000) as MultihopTXTimerStage;
   components new TSRSensorStage(PIXIE_PRIORITY_NORM);
   components new MultihopFactoryStage() as MultihopFactoryStage;
