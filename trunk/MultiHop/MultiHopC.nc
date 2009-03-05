@@ -34,7 +34,7 @@ implementation
   
   BeaconReceiveMessageStage.Output -> BeaconProcessStage.Input;
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
-  BeaconProcessStage.RTable -> RoutingTable;
+  BeaconProcessStage.RoutingTable -> RoutingTable;
   
   /* MultiHop recieve msg */
   components new RecieveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultiHopRecieveMessageStage;
