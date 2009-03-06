@@ -16,18 +16,25 @@ generic module MultihopProcessStageP() {
       return FAIL;
     } else {
       memref_t newMR;
-      MultihopMsg *msgPtr;
+      message_t *msgPtr;
+      MultihopMsg *msgPayload;
       MultihopMsg *origMsgPtr;
-
-      origMsgPtr = (MultihopMsg*) ref;
+      uint16_t myParent;
+     
+      origMsgPtr = (MultihopMsg*) call PixieMemAlloc.data(ref);
+      newMR = call PixieMemAlloc.allocate(sizeof(message_t));
+      msgPtr = (*message_t) call PixieMemAlloc.data(newMR);
+      msgPayload = (MultihopMsg*) call Packet.getPayload(msgPtr, sizeof(MultihopMsg));
+      msgPayload->source = origMsgPtr->source;
+      msgPayload->seqnum = origMsgPtr->seqnum;
+      msgPayload->treedepth = origMsgPtr->treedepth;
+      msgPayload->data = origMsgPtr->data;
       
-      newMR = call PixieMemAlloc.allocate(sizeof(MultihopMsg));
-      msgPtr = (MultihopMsg*) call PixieMemAlloc.data(newMR);
-      msgPtr->source = origMsgPtr->source;
-      msgPtr->seqnum = origMsgPtr->seqnum;
-      msgPtr->treedepth = origMsgPtr->treedepth;
-      msgPtr->data = origMsgPtr->data;
-	
+
+      /*Setup send and recieve fields */
+      myParent = RoutingTable.getCurrentParent();
+      call AMPacket.setSource(msgPtr, TOS_NODE_ID);
+      call AMPacket.setDestination(msgPtr, myParent);
       call PixieSink.enqueue(newMR);
       call PixieMemAlloc.release(newMR);	
     }
