@@ -1,4 +1,6 @@
-import sys,os
+import sys
+import os
+import time
 sys.path.append(os.path.join(os.environ["TOSROOT"], "support/sdkpython"))
 from tinyos.message import MoteIF
 import MultihopMsg
@@ -6,7 +8,7 @@ import MultihopMsg
 class NetworkMonitor:
     def __init__(self):
         self.mif = MoteIF.MoteIF()
-        self.mif.addSource("sf@localhost:9002")
+        self.mif.addSource("sf@localhost:9000")
         self.mif.addListener(self, MultihopMsg.MultihopMsg)
 
     def receive(self, src, msg):
