@@ -30,5 +30,6 @@ typedef struct MultihopMsg {
 typedef struct BeaconMsg {
   nx_uint16_t source;
   nx_uint16_t treedepth;
+  nx_uint32_t seqnum;
 } BeaconMsg;
 #endif

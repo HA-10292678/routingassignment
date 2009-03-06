@@ -23,4 +23,7 @@ generic configuration BeaconProcessStage() {
   BeaconProcessStageP.PixieMemAlloc -> PixieC;
   BeaconProcessStageP.Packet -> PixieC;
   BeaconProcessStageP.CC2420Packet -> CC2420PacketC;
+
+  components LedsC;
+  BeaconProcessStageP.Leds -> LedsC;
 }
