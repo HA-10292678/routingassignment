@@ -15,3 +15,4 @@ generic configuration MultihopNodeGatewayStage() {
 
   components PixieC;
   MultihopNodeGatewayStageP.PixieMemAlloc -> PixieC;
+}
