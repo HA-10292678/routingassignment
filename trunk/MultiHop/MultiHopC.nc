@@ -16,8 +16,11 @@ nodes and have node ID 0 act as the base station.
 implementation
 {
 
+  components PixieC;
+
   /* Routing table */
-  components new RoutingTableP() as RoutingTable;
+  components RoutingTableP as RoutingTable;
+  RoutingTable.Boot -> PixieC;
 
   /* Root beacon tx */
   components new TimerStage(1000) as BeaconTXTimerStage;
@@ -34,7 +37,6 @@ implementation
   
   BeaconReceiveMessageStage.Output -> BeaconProcessStage.Input;
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
-  BeaconProcessStage.OutputTable -> RoutingTable;
   
   /* MultiHop recieve msg */
   components new ReceiveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultihopReceiveMessageStage;
