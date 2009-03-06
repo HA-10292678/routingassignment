@@ -1,5 +1,6 @@
 #include "Pixie.h"
 #include "MultiHop.h"
+#include "printf.h"
 generic module MultihopFactoryStageP() {
   provides interface PixieStage;
   uses interface PixieSink;
@@ -16,7 +17,9 @@ generic module MultihopFactoryStageP() {
   command error_t PixieStage.run(memref_t ref) {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
-    } else {
+    } else if (TOS_NODE_ID == ROOT_ID){
+        return FAIL;
+      } else {
       memref_t newMR;
       message_t* msgPtr;
       MultihopMsg* msgPayload;

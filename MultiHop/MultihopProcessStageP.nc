@@ -17,7 +17,7 @@ generic module MultihopProcessStageP() {
   command error_t PixieStage.run(memref_t ref) {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
-    } else {
+    } else{
       memref_t newMR;
       message_t *msgPtr;
       MultihopMsg *msgPayload;
@@ -32,8 +32,10 @@ generic module MultihopProcessStageP() {
       msgPayload->seqnum = origMsgPtr->seqnum;
       msgPayload->treedepth = origMsgPtr->treedepth;
       msgPayload->data = origMsgPtr->data;
-      
-
+      if (TOS_NODE_ID == ROOT_ID){
+        printf(msgPayload);
+        return FAIL;
+      }
       /*Setup send and recieve fields */
       myParent = call RoutingTable.getCurrentParent();
       call AMPacket.setSource(msgPtr, TOS_NODE_ID);
