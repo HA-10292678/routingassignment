@@ -1,6 +1,6 @@
 #include "Pixie.h"
-#include "Multihop.h"
-generic module MultihopProcessStageP() {
+#include "MultiHop.h"
+generic module MultihopFactoryStageP() {
   provides interface PixieStage;
   uses interface PixieSink;
   uses interface PixieMemAlloc;
@@ -27,14 +27,14 @@ generic module MultihopProcessStageP() {
 	  msgPtr->source = TOS_NODE_ID;
 	  msgPtr->seqnum = call RoutingTable.getCurrentSeqnum();
 	  msgPtr->treedepth = call RoutingTable.getCurrentTreeDepth();
-	  msgPtr->data = TSRVal;
+	  msgPtr->data = *TSRVal;
 	}
 
+        call PixieSink.enqueue(newMR);
+        call PixieMemAlloc.release(newMR);
+        call PixieMemAlloc.release(ref);
+        return SUCCESS;
       }
-      call PixieSink.enqueue(newMR);
-      call PixieMemAlloc.release(newMR);
-      call PixieMemAlloc.release(ref);
-      return SUCCESS;
   } 
 }
 

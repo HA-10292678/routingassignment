@@ -1,7 +1,7 @@
 #include "Pixie.h"
 #include "MultiHop.h"
 
-generic module BeaconFactoryStageP() {
+generic module MultihopProcessStageP() {
   provides interface PixieStage;
   uses interface PixieSink;
   uses interface PixieMemAlloc;
@@ -16,20 +16,24 @@ generic module BeaconFactoryStageP() {
       return FAIL;
     } else {
       memref_t newMR;
-      MultihopMsg* msgPtr;
+      MultihopMsg *msgPtr;
+      MultihopMsg *origMsgPtr;
+
+      origMsgPtr = (MultihopMsg*) ref;
       
-      
-      newMR = call PixieMemAlloc.allocate(sizeof(BeaconMsg));
-      msgPtr = (BeaconMsg*) call PixieMemAlloc.data(newMR);
-      msgPtr = ref;
+      newMR = call PixieMemAlloc.allocate(sizeof(MultihopMsg));
+      msgPtr = (MultihopMsg*) call PixieMemAlloc.data(newMR);
+      msgPtr->source = origMsgPtr->source;
+      msgPtr->seqnum = origMsgPtr->seqnum;
+      msgPtr->treedepth = origMsgPtr->treedepth;
+      msgPtr->data = origMsgPtr->data;
 	
       call PixieSink.enqueue(newMR);
       call PixieMemAlloc.release(newMR);	
-      }
-      
-      call PixieMemAlloc.release(ref);
-      return SUCCESS;
     }
+      
+    call PixieMemAlloc.release(ref);
+    return SUCCESS;
   }
 
 }
