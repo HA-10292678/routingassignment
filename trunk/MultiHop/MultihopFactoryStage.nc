@@ -15,6 +15,8 @@ generic configuration MultihopFactoryStage() {
 
   components PixieC;
   MultihopFactoryStageP.PixieMemAlloc -> PixieC;
+  MultihopFactoryStageP.Packet -> PixieC;
+  MultihopFactoryStageP.AMPacket -> PixieC;
 
   components RoutingTableP;
   MultihopFactoryStageP.RoutingTable -> RoutingTableP;

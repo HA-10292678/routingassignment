@@ -5,6 +5,8 @@ generic module MultihopFactoryStageP() {
   uses interface PixieSink;
   uses interface PixieMemAlloc;
   uses interface RoutingTable;
+  uses interface Packet;
+  uses interface AMPacket;
 } implementation {
 
   command error_t PixieStage.init() {

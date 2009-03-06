@@ -6,6 +6,8 @@ generic module MultihopProcessStageP() {
   uses interface PixieSink;
   uses interface PixieMemAlloc;
   uses interface RoutingTable;
+  uses interface Packet;
+  uses interface AMPacket;
 } implementation {
 
   command error_t PixieStage.init() {
@@ -24,7 +26,7 @@ generic module MultihopProcessStageP() {
      
       origMsgPtr = (MultihopMsg*) call PixieMemAlloc.data(ref);
       newMR = call PixieMemAlloc.allocate(sizeof(message_t));
-      msgPtr = (*message_t) call PixieMemAlloc.data(newMR);
+      msgPtr = (message_t*) call PixieMemAlloc.data(newMR);
       msgPayload = (MultihopMsg*) call Packet.getPayload(msgPtr, sizeof(MultihopMsg));
       msgPayload->source = origMsgPtr->source;
       msgPayload->seqnum = origMsgPtr->seqnum;
