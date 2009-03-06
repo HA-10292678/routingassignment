@@ -33,6 +33,7 @@ generic module BeaconProcessStageP() {
       receivedMessage = (message_t*) call PixieMemAlloc.data(ref);	
       receivedBeacon = (BeaconMsg*) call Packet.getPayload(receivedMessage, sizeof(BeaconMsg));
       
+      newMR = call PixieMemAlloc.allocate(sizeof(BeaconMsg));
       newBeacon = (BeaconMsg*) call PixieMemAlloc.data(newMR);
       
       

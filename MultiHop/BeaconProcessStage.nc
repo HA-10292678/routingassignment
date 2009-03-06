@@ -18,6 +18,9 @@ generic configuration BeaconProcessStage() {
   BeaconProcessStageP.RoutingTable -> RoutingTableP;
 
   components PixieC;
+  components CC2420PacketC;
+
   BeaconProcessStageP.PixieMemAlloc -> PixieC;
   BeaconProcessStageP.Packet -> PixieC;
+  BeaconProcessStageP.CC2420Packet -> CC2420PacketC;
 }
