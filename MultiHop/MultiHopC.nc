@@ -42,10 +42,17 @@ implementation
   components new ReceiveStage(MultihopMsg, AM_MULTIHOP_MSG) as MultihopReceiveMessageStage;
   components new MultihopProcessStage() as MultihopProcessStage;
   components new SendMessageStage(PIXIE_PRIORITY_NORM, MultihopMsg, AM_MULTIHOP_MSG) as MultihopProcessSendStage; 
-  
-  MultihopReceiveMessageStage.Output -> MultihopProcessStage.Input;
-  MultihopProcessStage.Output -> MultihopProcessSendStage.Input;
+  components new SerialSendStage(PIXIE_PRIORITY_NORM, MultihopMsg, AM_MULTIHOP_MSG) as MultihopSerialSendStage; 
+  components new MultihopRootGatewayStage() as MultihopRootGatewayStage;
+  components new MultihopNodeGatewayStage() as MultihopNodeGatewayStage;
 
+  MultihopReceiveMessageStage.Output ->  MultihopRootGatewayStage.Input;
+  MultihopRootGatewayStage.Output -> MultihopProcessStage.Input;
+  MultihopProcessStage.Output -> MultihopSerialSendStage.Input;
+  
+  MultihopReceiveMessageStage.Output ->  MultihopNodeGatewayStage.Input;
+  MultihopNodeGatewayStage.Output -> MultihopProcessStage.Input;
+  MultihopProcessStage.Output -> MultihopProcessSendStage.Input; 
 
   /* Multihop take sample and send packet*/
   components new TimerStage(10000) as MultihopTXTimerStage;
@@ -56,6 +63,6 @@ implementation
   MultihopTXTimerStage.Output -> TSRSensorStage.Input;
   TSRSensorStage.Output -> MultihopFactoryStage.Input;
   MultihopFactoryStage.Output -> MultihopFactorySendStage.Input;
-
+  
 }
 
