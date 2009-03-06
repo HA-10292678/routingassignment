@@ -20,5 +20,5 @@ generic configuration BeaconProcessStage() {
 
   components PixieC;
   BeaconProcessStageP.PixieMemAlloc -> PixieC;
-
+  BeaconProcessStageP.Packet -> PixieC;
 }
