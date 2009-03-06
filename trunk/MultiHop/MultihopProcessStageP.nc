@@ -32,16 +32,17 @@ generic module MultihopProcessStageP() {
       msgPayload->seqnum = origMsgPtr->seqnum;
       msgPayload->treedepth = origMsgPtr->treedepth;
       msgPayload->data = origMsgPtr->data;
-      if (TOS_NODE_ID == ROOT_ID){
-        printf(msgPayload);
-        return FAIL;
-      }
       /*Setup send and recieve fields */
-      myParent = call RoutingTable.getCurrentParent();
-      call AMPacket.setSource(msgPtr, TOS_NODE_ID);
-      call AMPacket.setDestination(msgPtr, myParent);
-      call PixieSink.enqueue(newMR);
-      call PixieMemAlloc.release(newMR);	
+      if (TOS_NODE_ID != ROOT_ID {
+      	myParent = call RoutingTable.getCurrentParent();
+      	call AMPacket.setSource(msgPtr, TOS_NODE_ID);
+      	call AMPacket.setDestination(msgPtr, myParent);
+      	call PixieSink.enqueue(newMR);
+      	call PixieMemAlloc.release(newMR);
+      }	else {
+	call PixieSind.enqueue(msgPayload);
+        call PixieMemAlloc.release(newMR);
+      }
     }
       
     call PixieMemAlloc.release(ref);
