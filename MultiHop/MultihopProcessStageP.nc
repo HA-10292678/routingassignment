@@ -5,6 +5,7 @@ generic module MultihopProcessStageP() {
   provides interface PixieStage;
   uses interface PixieSink;
   uses interface PixieMemAlloc;
+  uses interface RoutingTable;
 } implementation {
 
   command error_t PixieStage.init() {
@@ -32,7 +33,7 @@ generic module MultihopProcessStageP() {
       
 
       /*Setup send and recieve fields */
-      myParent = RoutingTable.getCurrentParent();
+      myParent = call RoutingTable.getCurrentParent();
       call AMPacket.setSource(msgPtr, TOS_NODE_ID);
       call AMPacket.setDestination(msgPtr, myParent);
       call PixieSink.enqueue(newMR);
