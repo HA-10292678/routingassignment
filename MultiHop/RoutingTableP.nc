@@ -1,8 +1,8 @@
 #include "MultiHop.h"
 
-generic module RoutingTableP() {
+module RoutingTableP {
   provides interface RoutingTable;
-  provides interface Init;
+  uses interface Boot;
 } implementation {
 
   uint16_t node_id[ROUTING_TABLE_SIZE];
@@ -14,7 +14,7 @@ generic module RoutingTableP() {
   uint16_t current_treedepth;
   uint32_t current_seqnum; //Added so I can give consistent seqnum to the outgoing packets.
 
-  command error_t Init.init(){
+  event void Boot.booted(){
     int i;
     for(i = 0; i < ROUTING_TABLE_SIZE; i++){
       node_id[i] = 0;
@@ -26,7 +26,6 @@ generic module RoutingTableP() {
     current_treedepth = 0;
     current_seqnum = 0;    
 
-    return SUCCESS;
   }
 
   async command uint16_t RoutingTable.getCurrentParent() {
