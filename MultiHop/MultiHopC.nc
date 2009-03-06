@@ -51,7 +51,7 @@ implementation
   components new TimerStage(10000) as MultihopTXTimerStage;
   components new TSRSensorStage(PIXIE_PRIORITY_NORM);
   components new MultihopFactoryStage() as MultihopFactoryStage;
-  components new SendStage(PIXIE_PRIORITY_NORM, TOS_BCAST_ADDR, MultihopMsg, AM_MULTIHOP_MSG) as MultihopFactorySendStage;
+  components new SendMessageStage(PIXIE_PRIORITY_NORM, MultihopMsg, AM_MULTIHOP_MSG) as MultihopFactorySendStage;
 
   MultihopTXTimerStage.Output -> TSRSensorStage.Input;
   TSRSensorStage.Output -> MultihopFactoryStage.Input;
