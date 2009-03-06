@@ -34,14 +34,14 @@ implementation
   
   BeaconReceiveMessageStage.Output -> BeaconProcessStage.Input;
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
-  BeaconProcessStage.RoutingTable -> RoutingTable;
+  BeaconProcessStage.OutputTable -> RoutingTable;
   
   /* MultiHop recieve msg */
-  components new RecieveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultiHopRecieveMessageStage;
+  components new ReceiveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultihopReceiveMessageStage;
   components new MultihopProcessStage() as MultihopProcessStage;
-  components new SendStage(PIXIE_PRIORITY_NORM, TOS_BCAST_ADDR, MultihopMsg, AM_Multihop_MSG) as MultihopProcessSendStage; 
+  components new SendStage(PIXIE_PRIORITY_NORM, TOS_BCAST_ADDR, MultihopMsg, AM_MULTIHOP_MSG) as MultihopProcessSendStage; 
   
-  MultihopRecieveMessageStage.Output -> MultihopProcessStage.Input;
+  MultihopReceiveMessageStage.Output -> MultihopProcessStage.Input;
   MultihopProcessStage.Output -> MultihopProcessSendStage.Input;
 
 
