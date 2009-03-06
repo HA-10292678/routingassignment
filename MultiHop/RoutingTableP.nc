@@ -13,6 +13,7 @@ module RoutingTableP {
   uint16_t current_parent;
   uint16_t current_treedepth;
   uint32_t current_seqnum; //Added so I can give consistent seqnum to the outgoing packets.
+  uint32_t max_beacon_seqnum;
 
   event void Boot.booted(){
     int i;
@@ -25,8 +26,8 @@ module RoutingTableP {
       }
       current_parent = 0;
       current_treedepth = 0;
-    current_seqnum = 0;    
-    
+      current_seqnum = 0;    
+      max_beacon_seqnum = 0;
     }
     
   }
@@ -41,6 +42,20 @@ module RoutingTableP {
       current_seqnum = current_seqnum + 1;
       return current_seqnum;
     }  
+  }
+
+  async command uint32_t RoutingTable.getMaxBeaconSeqnum() {
+    atomic {
+      return max_beacon_seqnum;
+    }  
+  }
+
+  async command void RoutingTable.setMaxBeaconSeqnum(uint32_t seqnum) {
+    atomic {
+      if (seqnum > max_beacon_seqnum){
+	max_beacon_seqnum = seqnum;
+      }
+    }
   }
   async command uint16_t RoutingTable.getCurrentTreeDepth() {
     atomic {
