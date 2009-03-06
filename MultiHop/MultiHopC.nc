@@ -39,9 +39,9 @@ implementation
   BeaconProcessStage.Output -> BeaconProcessSendStage.Input;
   
   /* MultiHop recieve msg */
-  components new ReceiveMessageStage(MultihopMsg, AM_MULTIHOP_MSG) as MultihopReceiveMessageStage;
+  components new ReceiveStage(MultihopMsg, AM_MULTIHOP_MSG) as MultihopReceiveMessageStage;
   components new MultihopProcessStage() as MultihopProcessStage;
-  components new SendStage(PIXIE_PRIORITY_NORM, TOS_BCAST_ADDR, MultihopMsg, AM_MULTIHOP_MSG) as MultihopProcessSendStage; 
+  components new SendMessageStage(PIXIE_PRIORITY_NORM, MultihopMsg, AM_MULTIHOP_MSG) as MultihopProcessSendStage; 
   
   MultihopReceiveMessageStage.Output -> MultihopProcessStage.Input;
   MultihopProcessStage.Output -> MultihopProcessSendStage.Input;
