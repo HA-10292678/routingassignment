@@ -6,6 +6,7 @@
 
 enum {
   AM_MULTIHOP_MSG = 42,
+  AM_MULTIHOPMSG = 42, //To make MIG happy
   AM_BEACON_MSG = 43
 };
 
