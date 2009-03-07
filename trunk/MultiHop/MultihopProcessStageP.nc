@@ -40,7 +40,7 @@ generic module MultihopProcessStageP() {
       	call PixieSink.enqueue(newMR);
       	call PixieMemAlloc.release(newMR);
       }	else {
-	call PixieSink.enqueue(msgPayload);
+	call PixieSink.enqueue(msgPayload); //Problem, need to enqueue memref
         call PixieMemAlloc.release(newMR);
       }
     }

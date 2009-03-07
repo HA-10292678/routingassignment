@@ -14,14 +14,15 @@ generic module MultihopNodeGatewayStageP() {
   command error_t PixieStage.run(memref_t ref) {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
-    } else if (TOS_NODE_ID == ROOT_ID){
+    } else {
+      if (TOS_NODE_ID == ROOT_ID){
         call PixieMemAlloc.release(ref);
 	return SUCCESS;
-    } else {
-	call PixieSink.enqueue(ref);
+      }
+      
+      call PixieSink.enqueue(ref);
+      call PixieMemAlloc.release(ref);
+      return SUCCESS;
     }
-    call PixieMemAlloc.release(ref);
-    return SUCCESS;
   }
-}
-          
+}        
