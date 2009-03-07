@@ -14,16 +14,16 @@ generic module MultihopRootGatewayStageP() {
   command error_t PixieStage.run(memref_t ref) {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
-    } else if (TOS_NODE_ID != ROOT_ID){
+    } else {
+      if (TOS_NODE_ID != ROOT_ID){
         call PixieMemAlloc.release(ref);
 	return SUCCESS;
-    } else {
-        printf("Made it to RootGatewayStageP \n");
-	printfflush();
-        call PixieSink.enqueue(ref);
-        call PixieMemAlloc.release(ref);        
+      } 
+      printf("Made it to RootGatewayStageP \n");
+      printfflush();
+      call PixieSink.enqueue(ref);
+      call PixieMemAlloc.release(ref);        
+      return SUCCESS;
     }
-    return SUCCESS;
   }
 }
-          
