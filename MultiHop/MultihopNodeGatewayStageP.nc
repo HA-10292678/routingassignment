@@ -15,6 +15,7 @@ generic module MultihopNodeGatewayStageP() {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
     } else if (TOS_NODE_ID == ROOT_ID){
+        call PixieMemAlloc.release(ref);
 	return SUCCESS;
     } else {
 	call PixieSink.enqueue(ref);
