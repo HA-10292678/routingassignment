@@ -53,8 +53,8 @@ implementation
   MultihopReceiveMessageStage.Output ->  MultihopNodeGatewayStage.Input;
   MultihopNodeGatewayStage.Output -> MultihopProcessStage.Input;
   MultihopProcessStage.Output -> MultihopProcessSendStage.Input; 
-
-  /* Multihop take sample and send packet */
+  
+  /* Multihop take sample and send packet */ 
   components new TimerStage(10000) as MultihopTXTimerStage;
   components new TSRSensorStage(PIXIE_PRIORITY_NORM);
   components new MultihopFactoryStage() as MultihopFactoryStage;
@@ -63,6 +63,5 @@ implementation
   MultihopTXTimerStage.Output -> TSRSensorStage.Input;
   TSRSensorStage.Output -> MultihopFactoryStage.Input;
   MultihopFactoryStage.Output -> MultihopFactorySendStage.Input;
-
 }
 

@@ -13,11 +13,10 @@ class NetworkMonitor:
 
     def receive(self, src, msg):
         if msg.get_amType() == MultihopMsg.AM_TYPE:
-	    print "source: " + msg.get_source() + " ";
-	    print "seqnum: " + msg.get_seqnum() + " ";
-	    print "treedepth: " + msg.get_treedepth() + " ";
-	    print "data: " + msg.get_data() + " ";
- 	    print "\n";    	
+	    print "source: ", msg.get_source()
+	    print "seqnum: ", msg.get_seqnum()
+	    print "treedepth: ", msg.get_treedepth()
+	    print "data: ", msg.get_data()
     def sendMsg(self, addr, amType, amGroup, msg):
         self.mif.sendMsg(self.source, add, amType, amGroup, msg)
 

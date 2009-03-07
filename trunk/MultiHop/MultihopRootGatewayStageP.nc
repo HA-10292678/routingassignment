@@ -1,6 +1,6 @@
 #include "Pixie.h"
 #include "MultiHop.h"
-
+#include "printf.h"
 generic module MultihopRootGatewayStageP() {
   provides interface PixieStage;
   uses interface PixieSink;
@@ -15,11 +15,14 @@ generic module MultihopRootGatewayStageP() {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
     } else if (TOS_NODE_ID != ROOT_ID){
+        call PixieMemAlloc.release(ref);
 	return SUCCESS;
     } else {
-	call PixieSink.enqueue(ref);
+        printf("Made it to RootGatewayStageP \n");
+	printfflush();
+        call PixieSink.enqueue(ref);
+        call PixieMemAlloc.release(ref);        
     }
-    call PixieMemAlloc.release(ref);
     return SUCCESS;
   }
 }

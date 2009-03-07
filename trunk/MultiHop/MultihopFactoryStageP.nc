@@ -18,7 +18,9 @@ generic module MultihopFactoryStageP() {
     if (ref == PIXIE_NULL_MEMREF) {
       return FAIL;
     } else if (TOS_NODE_ID == ROOT_ID){
-        return FAIL;
+        printf("Made it to MultihopFactory");
+        printfflush();
+        return SUCCESS;
       } else {
       memref_t newMR;
       message_t* msgPtr;
