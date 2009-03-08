@@ -11,19 +11,18 @@ class NetworkMonitor:
         self.mif.addSource("sf@"+sys.argv[1])
         self.mif.addListener(self, MultihopMsg.MultihopMsg)
 	self.moteArray = {}
-	print "NodeID\tAvg. Light\tAvg.\tTreeDepth\tRecieved\tLost\t%"
+        time.sleep(2)
+	print "NodeID\tAvg. Light\tAvg.TreeDepth\tRecieved\tLost\t%"
 	print "--------------------------------------------------------------------"
     def receive(self, src, msg):
         if msg.get_amType() == MultihopMsg.AM_TYPE:
-	    id = msg.get_ID()
-	    if(self.moteArray[id])
+	    id = msg.get_source()
+            if id in self.moteArray:
 		self.moteArray[id].update(msg)
-	    else
-		self.moteArray[id] = new Mote(id)
-    def sendMsg(self, addr, amType, amGroup, msg):
-        self.mif.sendMsg(self.source, add, amType, amGroup, msg)
-    def logMsg(self, msg):
-	
+            else:
+		self.moteArray[id] = Mote(id)
+                self.moteArray[id].update(msg)
+            self.moteArray[id].printStats()
 class Mote:
     def __init__(self, NodeID):
 	self.ID = NodeID
@@ -50,10 +49,11 @@ class Mote:
     def updatePacketStats(self, seqnum):
 	if(seqnum > self.maxSeqnum):
 	    self.maxSeqnum = seqnum
-	    self.packetsRecieved++
-	self.droppedPackets = self.maxSeqnum - self.packetsRecieved	        
-    def printStats():
-	print self.ID + "\t" + self.avgData + "\t" + self.avgTreedepth + "\t" + self.packetsRecieved + "\t" + self.droppedPackets + "\t" + (self.droppedPackets/self.maxSeqnum)
+	    self.packetsRecieved += 1
+    def printStats(self):
+	self.droppedPackets = self.maxSeqnum - self.packetsRecieved        
+        percent = float(self.droppedPackets/self.maxSeqnum)
+        print self.ID,"\t",self.avgData,"\t\t",self.avgTreedepth,"\t\t",self.packetsRecieved,"\t\t",self.droppedPackets,"\t",percent,"%"
 listener = NetworkMonitor()
 msg = MultihopMsg.MultihopMsg()
 
