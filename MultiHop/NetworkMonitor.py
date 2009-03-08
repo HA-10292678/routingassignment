@@ -89,19 +89,19 @@ class Mote:
 	self.droppedPackets = -1
     def update(self, msg):
 	if(msg.get_source() == self.ID):
+	    self.updatePacketStats(msg.get_seqnum())
 	    self.updateData(msg.get_data())
 	    self.updateTreedepth(msg.get_treedepth())
-	    self.updatePacketStats(msg.get_seqnum())
     def updateData(self, value):
 	if(self.avgData == -1):
 	    self.avgData = value
 	else:
-	    self.avgData = (value + self.avgData)/2
+	    self.avgData = (value + self.avgData)/self.packetsRecieved
     def updateTreedepth(self, value):
 	if(self.avgTreedepth == -1):
 	    self.avgTreedepth = value
 	else:
-	    self.avgTreedepth = (self.avgTreedepth + value)/2
+	    self.avgTreedepth = (self.avgTreedepth + value)/self.packetsRecieved
     def updatePacketStats(self, seqnum):
 	if(seqnum > self.maxSeqnum):
 	    self.maxSeqnum = seqnum
