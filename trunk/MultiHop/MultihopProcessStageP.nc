@@ -25,8 +25,6 @@ generic module MultihopProcessStageP() {
       MultihopMsg *origMsgPtr;
       uint16_t myParent;
 
-      printf("Entered MultihopProcessStageP\n");
-     
       origMsgPtr = (MultihopMsg*) call PixieMemAlloc.data(ref);
       newMR = call PixieMemAlloc.allocate(sizeof(message_t));
       msgPtr = (message_t*) call PixieMemAlloc.data(newMR);
@@ -39,10 +37,9 @@ generic module MultihopProcessStageP() {
       myParent = call RoutingTable.getCurrentParent();
       call AMPacket.setSource(msgPtr, TOS_NODE_ID);
       call AMPacket.setDestination(msgPtr, myParent);
-
-      printf("Orig Source: %d\n", origMsgPtr->source);
-      printf("Destination: %d\n", myParent);
-
+      printf("Recieved a packet...\n");
+      printf("Orig Packet Source: %d; ", origMsgPtr->source);
+      printf("Packet Destination: %d\n", myParent);
       printfflush();
       call PixieSink.enqueue(newMR);
       call PixieMemAlloc.release(newMR);

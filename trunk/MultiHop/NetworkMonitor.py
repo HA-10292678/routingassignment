@@ -2,7 +2,8 @@ import sys
 import os
 import time
 import signal
-sys.path.append(os.path.join(os.environ["TOSROOT"], "support/sdkpython"))
+#sys.path.append(os.path.join(os.environ["TOSROOT"], "support/sdk/python"))
+sys.path.append(os.path.join("/usr/local/tinyos-2.x", "support/sdk/python"))
 from tinyos.message import MoteIF
 import MultihopMsg
 
