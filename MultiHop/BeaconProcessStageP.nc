@@ -76,7 +76,8 @@ generic module BeaconProcessStageP() {
 	newBeacon->treedepth = current_treedepth;
 	newBeacon->seqnum = receivedBeacon->seqnum;
 
-	printf("ID: %d, BeaconProcessStageP, new_source: %d, new_treedepth: %d\n", TOS_NODE_ID, newBeacon->source, newBeacon->treedepth);
+	printf("ID: %d, BeaconProcessStageP, new_source: %d, new_treedepth: %d, new parent %d \n", TOS_NODE_ID, newBeacon->source, newBeacon->treedepth, current_parent);
+	printfflush();
 	call Leds.set(current_treedepth & 0xFF);
 	
 	//send it off

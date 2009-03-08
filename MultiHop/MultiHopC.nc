@@ -5,14 +5,6 @@ configuration MultiHopC
 {
 }
 
-/* This is mostly a first step for the overall wiring.
-Many of these stages will not yet be implemented and
-we need to implement them.                          
-*/
-
-/* I think we can manage to write one code base for all
-nodes and have node ID 0 act as the base station. 
-*/
 implementation
 {
 
