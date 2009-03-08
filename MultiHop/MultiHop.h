@@ -1,7 +1,7 @@
 #ifndef CS263_MULTIHOP_H
 #define CS263_MULTIHOP_H
 
-#define ROOT_ID 0
+#define ROOT_ID 90
 #define ROUTING_TABLE_SIZE 10
 
 enum {
