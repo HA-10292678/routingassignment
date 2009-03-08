@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+import signal
 sys.path.append(os.path.join(os.environ["TOSROOT"], "support/sdkpython"))
 from tinyos.message import MoteIF
 import MultihopMsg
@@ -11,25 +12,22 @@ class NetworkMonitor:
         self.mif.addSource("sf@"+sys.argv[1])
         self.mif.addListener(self, MultihopMsg.MultihopMsg)
 	self.moteArray = {}
+	self.rawlog = LogFileWriter()        
         time.sleep(2)
-	self.rawlog = LogFileWriter()
     def receive(self, src, msg):
         if msg.get_amType() == MultihopMsg.AM_TYPE:
-	    id = msg.get_source()
+            self.rawlog.writePacket(msg)
+            id = msg.get_source()
             if id in self.moteArray:
 		self.moteArray[id].update(msg)
             else:
 		self.moteArray[id] = Mote(id)
                 self.moteArray[id].update(msg)	
-    def __input(self):
-	self.rawlog.close()
-	SummaryWriter(self.moteArray)
-	done = true	
 class Writer():
     def __init__(self, filename):
         self.open=False
         try:
-            self.datalog=open(filename,'a')
+            self.datalog=open(filename,'w')
             self.open=True
         except:
             print("could not create text Document")
@@ -43,11 +41,13 @@ class Writer():
         self.datalog.close()
         self.open=False
 
-class LogFileWriter():
+class LogFileWriter:
     def __init__(self):
 	self.log = Writer("rawlog.csv")
 	tableheader = "Time,Source,Sequence #,Tree depth, Light Sensor\n"
-	if self.log.open:
+	self.open = False
+        if self.log.open:
+            print tableheader
 	    self.log.write(tableheader)
 	    self.open = True
     def writePacket(self, msg):
@@ -60,9 +60,10 @@ class LogFileWriter():
 	    row.append(str(msg.get_data()))
 	    string = ""
 	    for i in row:
-		string += row[i]
-		srting += ","
-	    print string
+		string += i
+		string += ","
+	    self.log.write(string)
+            print string
     def close(self):
 	self.log.close()
 	self.open = False
@@ -71,13 +72,17 @@ class LogFileWriter():
         newformat=(now[3],now[4],now[5])
         return "%d:%d:%d" % newformat
 
-class SummaryWriter():
+class SummaryWriter:
     def __init__(self, moteArray):
 	self.summary = Writer("Summary.txt")
 	self.summary.write("NodeID\tAvg. Light\tAvg.TreeDepth\tRecieved\tLost\t%")
 	self.array = moteArray
-    def writeResults():
-	for node in sort(self.array.keys()):
+        self.writeResults()
+        self.summary.close()
+    def writeResults(self):
+        keys = self.array.keys()
+        keys.sort()
+	for i in keys:
 	    self.array[i].printStats()
 class Mote:
     def __init__(self, NodeID):
@@ -110,18 +115,28 @@ class Mote:
 	self.droppedPackets = self.maxSeqnum - self.packetsRecieved        
         percent = float(self.droppedPackets/self.maxSeqnum)
         stats = ""
-	stats += self.ID self.avgData
+	stats += str(self.ID)
 	stats +="\t"
-	stats += self.avgTreedepth
+        stats += str(self.avgData)
+        stats +="\t"
+	stats += str(self.avgTreedepth)
 	stats += "\t"
-	stats += self.packetsRecieved
+	stats += str(self.packetsRecieved)
 	stats += "\t"
-	stats += self.droppedPackets
+	stats += str(self.droppedPackets)
 	stats += "\t"
-	stats += percent
+	stats += str(percent)
 	return stats
+global listener 
 listener = NetworkMonitor()
 msg = MultihopMsg.MultihopMsg()
-done = false
+done = False
+def exitHandler(signum, frame):
+        print "Exiting..."
+        listener.rawlog.close()
+	SummaryWriter(listener.moteArray)
+	done = True
+signal.signal(signal.SIGINT,exitHandler)
 while not done:
     time.sleep(1)
+
