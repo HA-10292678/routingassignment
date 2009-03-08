@@ -12,8 +12,7 @@ class NetworkMonitor:
         self.mif.addListener(self, MultihopMsg.MultihopMsg)
 	self.moteArray = {}
         time.sleep(2)
-	print "NodeID\tAvg. Light\tAvg.TreeDepth\tRecieved\tLost\t%"
-	print "--------------------------------------------------------------------"
+	self.rawlog = LogFileWriter()
     def receive(self, src, msg):
         if msg.get_amType() == MultihopMsg.AM_TYPE:
 	    id = msg.get_source()
@@ -21,8 +20,65 @@ class NetworkMonitor:
 		self.moteArray[id].update(msg)
             else:
 		self.moteArray[id] = Mote(id)
-                self.moteArray[id].update(msg)
-            self.moteArray[id].printStats()
+                self.moteArray[id].update(msg)	
+    def __input(self):
+	self.rawlog.close()
+	SummaryWriter(self.moteArray)
+	done = true	
+class Writer():
+    def __init__(self, filename):
+        self.open=False
+        try:
+            self.datalog=open(filename,'a')
+            self.open=True
+        except:
+            print("could not create text Document")
+            self.open=False
+    def write(self,row):
+        if self.open:
+            self.datalog.write(str(row))
+	    self.datalog.write("\n")
+            self.datalog.flush()
+    def close(self):
+        self.datalog.close()
+        self.open=False
+
+class LogFileWriter():
+    def __init__(self):
+	self.log = Writer("rawlog.csv")
+	tableheader = "Time,Source,Sequence #,Tree depth, Light Sensor\n"
+	if self.log.open:
+	    self.log.write(tableheader)
+	    self.open = True
+    def writePacket(self, msg):
+	if self.open:
+	    row = []
+	    row.append(str(self.__timeMaker()))
+	    row.append(str(msg.get_source()))
+	    row.append(str(msg.get_seqnum()))
+	    row.append(str(msg.get_treedepth()))
+	    row.append(str(msg.get_data()))
+	    string = ""
+	    for i in row:
+		string += row[i]
+		srting += ","
+	    print string
+    def close(self):
+	self.log.close()
+	self.open = False
+    def __timeMaker(self):
+        now=time.localtime()
+        newformat=(now[3],now[4],now[5])
+        return "%d:%d:%d" % newformat
+
+class SummaryWriter():
+    def __init__(self, moteArray):
+	self.summary = Writer("Summary.txt")
+	self.summary.write("NodeID\tAvg. Light\tAvg.TreeDepth\tRecieved\tLost\t%")
+	self.array = moteArray
+    def writeResults():
+	for node in sort(self.array.keys()):
+	    self.array[i].printStats()
 class Mote:
     def __init__(self, NodeID):
 	self.ID = NodeID
@@ -53,9 +109,19 @@ class Mote:
     def printStats(self):
 	self.droppedPackets = self.maxSeqnum - self.packetsRecieved        
         percent = float(self.droppedPackets/self.maxSeqnum)
-        print self.ID,"\t",self.avgData,"\t\t",self.avgTreedepth,"\t\t",self.packetsRecieved,"\t\t",self.droppedPackets,"\t",percent,"%"
+        stats = ""
+	stats += self.ID self.avgData
+	stats +="\t"
+	stats += self.avgTreedepth
+	stats += "\t"
+	stats += self.packetsRecieved
+	stats += "\t"
+	stats += self.droppedPackets
+	stats += "\t"
+	stats += percent
+	return stats
 listener = NetworkMonitor()
 msg = MultihopMsg.MultihopMsg()
-
-while True:
+done = false
+while not done:
     time.sleep(1)
