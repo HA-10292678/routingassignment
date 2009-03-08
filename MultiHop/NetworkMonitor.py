@@ -83,7 +83,8 @@ class SummaryWriter:
         keys = self.array.keys()
         keys.sort()
 	for i in keys:
-	    self.array[i].printStats()
+            print self.summary.array[i].printStats()
+	    self.summary.write(self.array[i].printStats())
 class Mote:
     def __init__(self, NodeID):
 	self.ID = NodeID
