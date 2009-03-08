@@ -33,18 +33,12 @@ generic module MultihopProcessStageP() {
       msgPayload->treedepth = origMsgPtr->treedepth;
       msgPayload->data = origMsgPtr->data;
       /*Setup send and recieve fields */
-      if (TOS_NODE_ID != ROOT_ID) {
-      	myParent = call RoutingTable.getCurrentParent();
-      	call AMPacket.setSource(msgPtr, TOS_NODE_ID);
-      	call AMPacket.setDestination(msgPtr, myParent);
-      	call PixieSink.enqueue(newMR);
-      	call PixieMemAlloc.release(newMR);
-      }	else {
-	call PixieSink.enqueue(msgPayload); //Problem, need to enqueue memref
-        call PixieMemAlloc.release(newMR);
-      }
+      myParent = call RoutingTable.getCurrentParent();
+      call AMPacket.setSource(msgPtr, TOS_NODE_ID);
+      call AMPacket.setDestination(msgPtr, myParent);
+      call PixieSink.enqueue(newMR);
+      call PixieMemAlloc.release(newMR);
     }
-      
     call PixieMemAlloc.release(ref);
     return SUCCESS;
   }

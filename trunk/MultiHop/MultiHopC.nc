@@ -50,8 +50,7 @@ implementation
   // This is a problem. After going through the gateways, both dataflows are
   // going back to MultihopProcessStage. We need to change this.
   MultihopReceiveMessageStage.Output ->  MultihopRootGatewayStage.Input;
-  MultihopRootGatewayStage.Output -> MultihopProcessStage.Input;
-  MultihopProcessStage.Output -> MultihopSerialSendStage.Input;
+  MultihopRootGatewayStage.Output -> MultihopSerialSendStage.Input;
   
   MultihopReceiveMessageStage.Output ->  MultihopNodeGatewayStage.Input;
   MultihopNodeGatewayStage.Output -> MultihopProcessStage.Input;
