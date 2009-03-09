@@ -58,12 +58,12 @@ generic module BeaconProcessStageP() {
 	
 	//Access signal strength
 	lqi = call CC2420Packet.getLqi(receivedMessage);
-	printf("ID: %d, BeaconProcessStageP, lqi: %d\n", TOS_NODE_ID, lqi);
+	//printf("ID: %d, BeaconProcessStageP, lqi: %d\n", TOS_NODE_ID, lqi);
 	
 	//Access treedepth and id
 	treedepth = receivedBeacon->treedepth;
 	source = receivedBeacon->source;
-	printf("ID: %d, BeaconProcessStageP, m_treedepth: %d, m_source, %d, m_seqnum: %d\n", TOS_NODE_ID, treedepth, source, (receivedBeacon->seqnum));
+	printf("Recieved a beacon from: %d, with treedepth: %d, and seqnum: %d\n", source, treedepth, (receivedBeacon->seqnum));
 	
 	//store in table (also chooses parent)
 	call RoutingTable.insertNode(source, treedepth, lqi);
@@ -76,8 +76,7 @@ generic module BeaconProcessStageP() {
 	newBeacon->treedepth = current_treedepth;
 	newBeacon->seqnum = receivedBeacon->seqnum;
 
-	printf("ID: %d, BeaconProcessStageP, new_source: %d, new_treedepth: %d, new parent %d \n", TOS_NODE_ID, newBeacon->source, newBeacon->treedepth, current_parent);
-	printfflush();
+	//printf("ID: %d, BeaconProcessStageP, new_source: %d, new_treedepth: %d, new parent %d \n", TOS_NODE_ID, newBeacon->source, newBeacon->treedepth, current_parent);
 	call Leds.set(current_treedepth & 0xFF);
 	
 	//send it off
