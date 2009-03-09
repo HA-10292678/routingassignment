@@ -72,17 +72,17 @@ module RoutingTableP {
     uint8_t best_parent_index = 0;
     uint8_t max_score = 0;
     int i;
-    printf("Current Routing Table is:\n");
+    //printf("Current Routing Table is:\n");
     atomic {
       for (i = 0; i < ROUTING_TABLE_SIZE; i++) {
-	printf("NodeID: %d has score of %d",node_id[i],score[i]);
+	//printf("NodeID: %d has score of %d",node_id[i],score[i]);
 	if (score[i] > max_score) {
 	  best_parent_index = i;
 	  max_score = score[i];
 
 	}
       }
-    printfflush();
+    //printfflush();
     }
     atomic {
       current_parent = node_id[best_parent_index];
