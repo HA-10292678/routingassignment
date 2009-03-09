@@ -28,8 +28,6 @@ generic module MultihopFactoryStageP() {
 	uint16_t* TSRVal;
 	uint16_t myParent;
 
-	printf("ID: %d Generating data packet\n", TOS_NODE_ID);
-	printfflush();
 	
 	newMR = call PixieMemAlloc.allocate(sizeof(message_t));
 	msgPtr = (message_t*) call PixieMemAlloc.data(newMR);
@@ -45,6 +43,8 @@ generic module MultihopFactoryStageP() {
 	  call AMPacket.setSource(msgPtr, TOS_NODE_ID);
 	  call AMPacket.setDestination(msgPtr, myParent);
 	}
+	printf("ID: %d Generating data packet, sending to parent: %d \n", TOS_NODE_ID, myParent);
+	printfflush();
 	
 	call PixieSink.enqueue(newMR);
 	call PixieMemAlloc.release(newMR);
