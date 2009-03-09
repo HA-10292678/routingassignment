@@ -72,7 +72,7 @@ generic module BeaconProcessStageP() {
 	current_parent = call RoutingTable.getCurrentParent();
 	current_treedepth = call RoutingTable.getCurrentTreeDepth();
 	
-	newBeacon->source = current_parent;
+	newBeacon->source = TOS_NODE_ID;
 	newBeacon->treedepth = current_treedepth;
 	newBeacon->seqnum = receivedBeacon->seqnum;
 
