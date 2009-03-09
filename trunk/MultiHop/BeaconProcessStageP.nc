@@ -71,17 +71,18 @@ generic module BeaconProcessStageP() {
 	//create new beacon message
 	current_parent = call RoutingTable.getCurrentParent();
 	current_treedepth = call RoutingTable.getCurrentTreeDepth();
-	
-	newBeacon->source = TOS_NODE_ID;
-	newBeacon->treedepth = current_treedepth;
-	newBeacon->seqnum = receivedBeacon->seqnum;
+	if(current_parent != 0) {   
+	    newBeacon->source = TOS_NODE_ID;
+	    newBeacon->treedepth = current_treedepth;
+	    newBeacon->seqnum = receivedBeacon->seqnum;
 
-	//printf("ID: %d, BeaconProcessStageP, new_source: %d, new_treedepth: %d, new parent %d \n", TOS_NODE_ID, newBeacon->source, newBeacon->treedepth, current_parent);
-	call Leds.set(current_treedepth & 0xFF);
+	    //printf("ID: %d, BeaconProcessStageP, new_source: %d, new_treedepth: %d, new parent %d \n", TOS_NODE_ID, newBeacon->source, newBeacon->treedepth, current_parent);
+	    call Leds.set(current_treedepth & 0xFF);
 	
-	//send it off
-	printfflush();
-	call PixieSink.enqueue(newMR);
+	    //send it off
+	    //printfflush();
+	    call PixieSink.enqueue(newMR);
+	}
 	call PixieMemAlloc.release(newMR);
 	call PixieMemAlloc.release(ref);
 	return SUCCESS;
