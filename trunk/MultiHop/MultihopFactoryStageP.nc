@@ -45,8 +45,9 @@ generic module MultihopFactoryStageP() {
 	}
 	printf("ID: %d Generating data packet, sending to parent: %d \n", TOS_NODE_ID, myParent);
 	printfflush();
-	
-	call PixieSink.enqueue(newMR);
+	if (myParent != 0){
+	    call PixieSink.enqueue(newMR);
+	}
 	call PixieMemAlloc.release(newMR);
 	call PixieMemAlloc.release(ref);
 	return SUCCESS;

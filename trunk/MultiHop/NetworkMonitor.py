@@ -135,8 +135,8 @@ msg = MultihopMsg.MultihopMsg()
 done = False
 def exitHandler(signum, frame):
         print "Exiting..."
-        #listener.rawlog.close()
-	#SummaryWriter(listener.moteArray)
+        listener.rawlog.close()
+	SummaryWriter(listener.moteArray)
 	done = True
         sys.exit(0)
 
