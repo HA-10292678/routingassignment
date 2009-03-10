@@ -25,7 +25,7 @@ module RoutingTableP {
 	score[i] = 0;
       }
       current_parent = 0;
-      current_treedepth = 0;
+      current_treedepth = -1;
       current_seqnum = 0;    
       max_beacon_seqnum = 0;
     }
@@ -100,7 +100,7 @@ module RoutingTableP {
     
     //This will avoid loops
     atomic {
-      if (treedepth >= current_treedepth){
+      if ((treedepth >= current_treedepth)&&(current_treedepth > 0)){
 	return;
       }
     }    
