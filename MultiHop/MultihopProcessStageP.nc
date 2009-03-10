@@ -41,7 +41,9 @@ generic module MultihopProcessStageP() {
       printf("Orig Packet Source: %d; ", origMsgPtr->source);
       printf("Packet Destination: %d\n", myParent);
       printfflush();
-      call PixieSink.enqueue(newMR);
+      if(myParent != 0) {
+          call PixieSink.enqueue(newMR);
+      }
       call PixieMemAlloc.release(newMR);
     }
     call PixieMemAlloc.release(ref);

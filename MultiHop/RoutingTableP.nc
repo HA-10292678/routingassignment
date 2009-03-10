@@ -100,7 +100,7 @@ module RoutingTableP {
     
     //This will avoid loops
     atomic {
-      if (treedepth > current_treedepth){
+      if (treedepth >= current_treedepth){
 	return;
       }
     }    
