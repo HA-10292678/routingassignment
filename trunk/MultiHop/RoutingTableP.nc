@@ -12,7 +12,7 @@ module RoutingTableP {
 
   uint16_t current_parent;
   uint16_t current_treedepth;
-  uint32_t current_seqnum; //Added so I can give consistent seqnum to the outgoing packets.
+  uint32_t current_seqnum; 
   uint32_t max_beacon_seqnum;
 
   event void Boot.booted(){
@@ -63,7 +63,6 @@ module RoutingTableP {
     }  
   }
   
-  //Calculate score. Should probably change to something better
   uint8_t calculateScore(uint16_t treedepth, uint8_t lqi_in) {
     return (lqi_in - treedepth);
   }
